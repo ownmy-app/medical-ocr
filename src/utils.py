@@ -1,7 +1,14 @@
 from __future__ import annotations
-import numpy as np
-import cv2
 import re
+
+try:
+    import numpy as np
+    import cv2
+    _CV2_AVAILABLE = True
+except ImportError:
+    np = None  # type: ignore[assignment]
+    cv2 = None  # type: ignore[assignment]
+    _CV2_AVAILABLE = False
 from datetime import datetime
 from typing import Optional, Tuple, Dict, List
 from config import DATE_FORMATS, ABBREV_MAP
@@ -77,6 +84,8 @@ def join_unique(items: List[str], sep: str = "; ", limit: int = 6) -> str:
             break
     return sep.join(uniq)
 def preprocess_image(img):
+    if not _CV2_AVAILABLE:
+        raise ImportError("preprocess_image requires opencv-python. Install with: pip install medical-ocr[gpu]")
     gray = cv2.cvtColor(np.array(img), cv2.COLOR_BGR2GRAY)
     resized = cv2.resize(gray, None, fx=1.5, fy=1.5, interpolation=cv2.INTER_LINEAR)
     processed_image = cv2.adaptiveThreshold(

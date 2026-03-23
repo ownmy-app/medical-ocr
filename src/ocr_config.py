@@ -6,6 +6,10 @@ Set up environment variables for external API services.
 import os
 from typing import Dict, List
 
+# Top-level constants for quick access
+DEFAULT_ENGINE = "tesseract"
+SUPPORTED_FORMATS = ["pdf", "png", "jpg", "jpeg", "tiff", "bmp"]
+
 # OCR Engine Configuration
 OCR_CONFIG = {
     # Confidence thresholds (0.0 to 1.0)
