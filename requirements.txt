@@ -1,0 +1,25 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+#psycopg[binary]==3.2.1
+#pydantic==2.8.2
+python-dotenv==1.0.1
+openai==1.52.2
+
+# OCR Libraries (Core - Most Accurate)
+pytesseract==0.3.13
+easyocr==1.7.1
+#Pillow==10.4.0
+opencv-python==4.6.0.66
+pdf2image==1.17.0
+
+# External API clients (Optional - for difficult cases)
+google-cloud-vision==3.7.4
+
+# Image processing and quality assessment  
+scikit-image==0.24.0
+numpy==1.26.4
+scipy
+
+# Document processing
+python-docx==1.1.2
+docx2txt==0.8
