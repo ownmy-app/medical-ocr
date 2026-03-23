@@ -32,11 +32,11 @@ medical-ocr = "medical_ocr.main:main"
 medical-ocr-api = "medical_ocr.pipeline:run_api"
 
 [tool.hatch.build.targets.wheel]
-packages = ["medical_ocr"]
+packages = ["src/medical_ocr"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
 
 [project.urls]
-Repository = "https://github.com/ownmy-app/medical-ocr"
+Repository = "https://github.com/nometria/medical-ocr"
