@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Form, UploadFile, File
+from fastapi import FastAPI
 import uvicorn
 from extractor import extract,OCR
 from pipeline import generate_summary
@@ -7,18 +7,14 @@ import uuid
 import os
 from typing import Any, Dict, List, Optional
 
-import os
-import uuid
 import shutil
 import mimetypes
 from urllib.parse import urlparse
 import json
 
 import requests
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException,Body
-from fastapi import FastAPI, Request, File, Form, UploadFile, Body, HTTPException
+from fastapi import HTTPException,Body
 
-from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -167,7 +163,7 @@ def extract_file(
     file = payload.get("file")
     file_format = payload.get("file_format")
     
-    print(f"🔍 Extracted parameters:")
+    print("🔍 Extracted parameters:")
     print(f"  - File URL: {file_url}")
     print(f"  - File provided: {file is not None}")
     print(f"  - File format: {file_format}")
@@ -402,7 +398,7 @@ def extract_from_doc(
 
 def normalize_schema(schema):
     """Normalize JSON schema for OpenAI structured outputs"""
-    print(f"🔧 Normalizing schema...")
+    print("🔧 Normalizing schema...")
     if not schema:
         print("📋 No schema provided")
         return schema
@@ -536,7 +532,7 @@ def invoke_llm(payload: dict = Body(...)):
         response_json_schema = payload.get("response_json_schema")
         file_urls = payload.get("file_urls")
         
-        print(f"🔍 Extracted parameters:")
+        print("🔍 Extracted parameters:")
         print(f"  - Prompt length: {len(prompt) if prompt else 0} characters")
         print(f"  - Context from internet: {add_context_from_internet}")
         print(f"  - Has schema: {response_json_schema is not None}")
@@ -696,7 +692,7 @@ def generate_image(payload: dict = Body(...)):
     try:
         prompt = payload.get("prompt")
         
-        print(f"🔍 Extracted parameters:")
+        print("🔍 Extracted parameters:")
         print(f"  - Prompt length: {len(prompt) if prompt else 0} characters")
         print(f"  - Prompt preview: {prompt[:100] if prompt else 'None'}...")
         

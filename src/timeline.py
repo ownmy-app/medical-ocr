@@ -1,6 +1,5 @@
 from __future__ import annotations
 from typing import List, Tuple
-from dataclasses import asdict
 from datetime import datetime
 import re
 

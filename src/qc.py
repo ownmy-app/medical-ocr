@@ -1,8 +1,7 @@
 from __future__ import annotations
 import re
-from typing import List, Tuple
-from datetime import datetime
-from models import TimelineEvent, SummaryArtifacts
+from typing import List
+from models import TimelineEvent
 
 def compute_gaps(events: List[TimelineEvent]) -> List[int]:
     dates = [e.date for e in events if e.date]
