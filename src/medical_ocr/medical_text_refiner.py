@@ -8,9 +8,9 @@ import difflib
 from typing import Dict, List, Tuple, Optional, Any
 import logging
 from dataclasses import dataclass
-from injury_medical_vocabulary import ALL_INJURY_TERMS
-from legal_medical_vocabulary import (
-    get_legal_medical_vocabulary, 
+from .injury_medical_vocabulary import ALL_INJURY_TERMS
+from .legal_medical_vocabulary import (
+    get_legal_medical_vocabulary,
     get_legal_medical_abbreviations,
     get_legal_medical_corrections,
     calculate_legal_medical_relevance

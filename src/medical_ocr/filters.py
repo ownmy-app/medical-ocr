@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import List
-from models import TimelineEvent
+from .models import TimelineEvent
 
 def by_doc_type(events: List[TimelineEvent], doc_type: str) -> List[TimelineEvent]:
     return [e for e in events if e.doc_type == doc_type]

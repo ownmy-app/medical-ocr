@@ -11,7 +11,7 @@ except ImportError:
     _CV2_AVAILABLE = False
 from datetime import datetime
 from typing import Optional, Tuple, Dict, List
-from config import DATE_FORMATS, ABBREV_MAP
+from .config import DATE_FORMATS, ABBREV_MAP
 
 def parse_date(date_str: Optional[str]) -> Optional[datetime]:
     if not date_str:

@@ -5,7 +5,7 @@ Based on analysis of demand letter and medical summary SOPs.
 
 import re
 from typing import Set, Dict, List
-from injury_medical_vocabulary import ALL_INJURY_TERMS, INJURY_ABBREVIATIONS
+from .injury_medical_vocabulary import ALL_INJURY_TERMS, INJURY_ABBREVIATIONS
 
 # Legal terminology specific to injury litigation
 LEGAL_LITIGATION_TERMS = {
