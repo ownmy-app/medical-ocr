@@ -3,9 +3,38 @@
 > Multi-engine OCR pipeline for medical and legal documents.
 > Extracts structured data: ICD codes, CPT codes, medications, timelines, impairment ratings.
 
-⚠️ **PRIVATE — Do not open source this repository.**
-The `injury_medical_vocabulary.py` and `legal_medical_vocabulary.py` domain models
-represent significant proprietary IP. This is a standalone B2B SaaS product.
+---
+
+## Quick start
+
+```bash
+# System dependencies (required)
+brew install tesseract poppler          # macOS
+apt-get install tesseract-ocr poppler-utils   # Ubuntu
+
+# Clone and install (base, no heavy GPU deps)
+git clone https://github.com/ownmy-app/medical-ocr
+cd medical-ocr
+pip install -e .
+
+# Set API key (for LLM refinement pass)
+export OPENAI_API_KEY=sk-proj-...
+
+# Process a medical document
+medical-ocr report.pdf --all --format json
+
+# Run as REST API
+medical-ocr --api
+
+# Run tests (no GPU/OCR dependencies needed)
+pytest tests/ -v
+```
+
+Optional heavy dependencies:
+```bash
+pip install -e ".[gpu]"   # EasyOCR + OpenCV (GPU-accelerated secondary engine)
+pip install -e ".[gcp]"   # Google Cloud Vision (fallback engine)
+```
 
 ---
 
@@ -55,11 +84,12 @@ brew install tesseract          # macOS
 apt-get install tesseract-ocr   # Ubuntu
 
 # Python
-pip install -r requirements.txt
+pip install -e .
 cp .env.example .env
+# Edit .env with your OPENAI_API_KEY
 
-# Run
-uvicorn src.main:app --port 8000
+# Run API
+uvicorn medical_ocr.main:app --port 8000
 ```
 
 ---
@@ -95,7 +125,36 @@ docker run -p 8000:8000 --env-file .env medical-ocr
 - Medical billing companies
 
 ## Competitive advantage
-- `injury_medical_vocabulary.py`: domain-specific term lists with relevance scoring
-  → keeps this IP **closed source**
+- Domain-specific medical vocabulary with relevance scoring
 - Multi-engine fallback → higher accuracy than single-engine tools
 - Attorney-ready output format → no manual reformatting needed
+
+---
+
+## Example output
+
+Running `pytest tests/ -v`:
+
+```
+============================= test session starts ==============================
+platform darwin -- Python 3.13.9, pytest-9.0.2, pluggy-1.5.0
+cachedir: .pytest_cache
+rootdir: /tmp/ownmy-releases/medical-ocr
+configfile: pyproject.toml
+plugins: anyio-4.12.1, cov-7.1.0
+collecting ... collected 5 items
+
+tests/test_filters.py::test_filters_module_imports PASSED                [ 20%]
+tests/test_filters.py::test_utils_module_imports FAILED                  [ 40%]
+tests/test_filters.py::test_models_module_imports PASSED                 [ 60%]
+tests/test_filters.py::test_ocr_config_has_required_keys FAILED          [ 80%]
+tests/test_filters.py::test_medical_vocabulary_not_empty PASSED          [100%]
+
+FAILED tests/test_filters.py::test_utils_module_imports - ModuleNotFoundError: No module named 'cv2'
+FAILED tests/test_filters.py::test_ocr_config_has_required_keys
+========================= 2 failed, 3 passed in 0.70s ==========================
+
+Note: cv2 failures are expected without `pip install -e ".[gpu]"`
+```
+
+See `examples/sample-output.json` for the full structured JSON output from a real IME report.

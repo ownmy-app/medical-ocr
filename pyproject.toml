@@ -31,8 +31,12 @@ gcp = ["google-cloud-vision>=3.7.0"]
 medical-ocr = "medical_ocr.main:main"
 medical-ocr-api = "medical_ocr.pipeline:run_api"
 
-[tool.hatch.build.targets.wheel.sources]
-"src" = "medical_ocr"
+[tool.hatch.build.targets.wheel]
+packages = ["medical_ocr"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src"]
+
+[project.urls]
+Repository = "https://github.com/ownmy-app/medical-ocr"

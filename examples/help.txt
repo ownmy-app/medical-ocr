@@ -1,0 +1,28 @@
+Usage: medical-ocr [OPTIONS] FILE
+
+  Multi-engine OCR pipeline for medical and legal documents.
+
+Arguments:
+  FILE  Path to PDF, image, or document to process
+
+Options:
+  --engine TEXT       OCR engine: tesseract (default), easyocr, gcp
+  --output-dir TEXT   Directory for output files (default: ./ocr-output)
+  --format TEXT       Output format: json, markdown, docx (default: json)
+  --extract TEXT      Comma-separated extraction targets:
+                      icd_codes, cpt_codes, medications, timeline,
+                      body_parts, impairment_ratings, diagnoses
+  --all               Extract all supported fields
+  --no-refine         Skip LLM refinement pass
+  --api               Start REST API server instead of processing a file
+
+Environment variables:
+  OPENAI_API_KEY      Required for LLM refinement and GCP fallback
+  TESSERACT_CMD       Path to tesseract binary (default: auto-detect)
+  GCP_CREDENTIALS     Path to Google Cloud credentials JSON (for GCP engine)
+
+Examples:
+  medical-ocr report.pdf --all --format json
+  medical-ocr scan.jpg --extract icd_codes,medications
+  medical-ocr docs/ --all --output-dir ./extracted
+  medical-ocr --api   # starts REST API on port 8000

@@ -1,0 +1,130 @@
+{
+  "document": {
+    "filename": "injury_report_2026_03_15.pdf",
+    "document_type": "independent_medical_examination",
+    "page_count": 12,
+    "ocr_engine": "tesseract",
+    "ocr_confidence": 0.94,
+    "processed_at": "2026-03-22T09:00:00Z"
+  },
+  "patient": {
+    "name": "John Smith",
+    "date_of_birth": "1978-04-22",
+    "date_of_injury": "2025-06-14",
+    "claim_number": "WC-2025-083421",
+    "employer": "Acme Manufacturing Inc."
+  },
+  "diagnoses": [
+    {
+      "icd_code": "S72.001A",
+      "description": "Fracture of unspecified part of neck of right femur, initial encounter",
+      "confidence": 0.97
+    },
+    {
+      "icd_code": "M54.5",
+      "description": "Low back pain",
+      "confidence": 0.92
+    },
+    {
+      "icd_code": "G89.29",
+      "description": "Other chronic pain",
+      "confidence": 0.88
+    }
+  ],
+  "procedures": [
+    {
+      "cpt_code": "27447",
+      "description": "Total knee arthroplasty",
+      "date": "2025-09-12",
+      "provider": "Dr. Sarah Chen, MD"
+    },
+    {
+      "cpt_code": "97110",
+      "description": "Physical therapy, therapeutic exercises",
+      "date": "2025-10-01",
+      "sessions": 24
+    },
+    {
+      "cpt_code": "72148",
+      "description": "MRI lumbar spine without contrast",
+      "date": "2025-07-08"
+    }
+  ],
+  "medications": [
+    {
+      "name": "Oxycodone HCl",
+      "dosage": "10 mg",
+      "frequency": "every 6 hours as needed",
+      "prescriber": "Dr. Michael Torres",
+      "start_date": "2025-06-20"
+    },
+    {
+      "name": "Cyclobenzaprine",
+      "dosage": "5 mg",
+      "frequency": "three times daily",
+      "prescriber": "Dr. Michael Torres",
+      "start_date": "2025-06-20"
+    },
+    {
+      "name": "Naproxen",
+      "dosage": "500 mg",
+      "frequency": "twice daily with food",
+      "prescriber": "Dr. Sarah Chen",
+      "start_date": "2025-09-15"
+    }
+  ],
+  "body_parts": ["right femur", "right knee", "lumbar spine", "lower back"],
+  "timeline": [
+    {
+      "date": "2025-06-14",
+      "event": "Workplace injury — fall from scaffolding at construction site"
+    },
+    {
+      "date": "2025-06-14",
+      "event": "Emergency room visit, County General Hospital"
+    },
+    {
+      "date": "2025-06-18",
+      "event": "Orthopedic consultation with Dr. Sarah Chen"
+    },
+    {
+      "date": "2025-07-08",
+      "event": "MRI lumbar spine ordered, results show L4-L5 disc herniation"
+    },
+    {
+      "date": "2025-09-12",
+      "event": "Total knee arthroplasty performed"
+    },
+    {
+      "date": "2025-10-01",
+      "event": "Physical therapy commenced, 3x/week for 8 weeks"
+    },
+    {
+      "date": "2026-01-15",
+      "event": "Maximum medical improvement (MMI) reached per Dr. Chen"
+    }
+  ],
+  "impairment_ratings": [
+    {
+      "body_part": "right lower extremity",
+      "rating_percentage": 23,
+      "whole_person_impairment": 9,
+      "method": "AMA Guides 6th Edition",
+      "examiner": "Dr. Robert Kim, IME Physician"
+    },
+    {
+      "body_part": "lumbar spine",
+      "rating_percentage": 8,
+      "whole_person_impairment": 5,
+      "method": "AMA Guides 6th Edition",
+      "examiner": "Dr. Robert Kim, IME Physician"
+    }
+  ],
+  "total_whole_person_impairment": 14,
+  "work_restrictions": [
+    "No lifting over 20 lbs",
+    "No prolonged standing over 2 hours without rest",
+    "No ladder climbing",
+    "Sedentary to light duty work only"
+  ]
+}
