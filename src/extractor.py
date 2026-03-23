@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 def OCR_old(file_path):
     # 1. extracting text from pdf file
     pages = convert_from_path(file_path)
-    document_text = ""
+    document_text = ""  # noqa: F841
     data={}
     for i in range(len(pages)):
         page = pages[i]
@@ -176,7 +176,7 @@ def calculate_document_metrics(page_metrics: Dict[str, Dict]) -> Dict[str, Any]:
 def extract(file_path, file_format):
     # 1. extracting text from pdf file
     pages = convert_from_path(file_path)
-    document_text = ""
+    document_text = ""  # noqa: F841
 
     for page in pages:
         processed_image = utils.preprocess_image(page)

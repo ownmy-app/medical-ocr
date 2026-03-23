@@ -1,7 +1,5 @@
 from __future__ import annotations
-from typing import List, Dict, Any
-from dataclasses import asdict
-from datetime import datetime
+from typing import List, Dict
 from models import TimelineEvent, SummaryArtifacts
 from utils import expand_abbreviations_for_summary, join_unique
 
@@ -13,7 +11,7 @@ def craft_summary(events: List[TimelineEvent], artifacts: SummaryArtifacts, max_
     all_dx = join_unique([d for e in events for d in e.diagnoses])
     all_parts = join_unique([bp for e in events for bp in e.body_parts])
     last_restr = artifacts.last_restrictions or "Not documented."
-    last_visit = artifacts.last_visit or "Unknown"
+    last_visit = artifacts.last_visit or "Unknown"  # noqa: F841
     mmi_line = artifacts.mmi_found or "Not documented."
     imp_line = artifacts.impairment_found or "Not documented."
     future_needs = join_unique(artifacts.future_needs_snippets, sep=" | ", limit=6)
@@ -91,7 +89,7 @@ def craft_summary(events: List[TimelineEvent], artifacts: SummaryArtifacts, max_
 
 
 def attorney_faq(events: List[TimelineEvent], artifacts: SummaryArtifacts) -> Dict[str, str]:
-    last_visit = artifacts.last_visit or "Unknown"
+    last_visit = artifacts.last_visit or "Unknown"  # noqa: F841
     last_restr = artifacts.last_restrictions or "Not documented."
     last_meds = "Not documented."
     for e in reversed(events):

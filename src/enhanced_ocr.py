@@ -10,7 +10,7 @@ import numpy as np
 from PIL import Image
 import pytesseract
 import easyocr
-from typing import Dict, List, Tuple, Optional, Any
+from typing import Dict, List, Any
 import logging
 from dataclasses import dataclass, asdict
 from enum import Enum
@@ -21,11 +21,9 @@ from injury_medical_vocabulary import (
     extract_injury_structured_data,
     validate_injury_text_quality,
     enhance_injury_ocr_text,
-    get_injury_context_keywords,
-    is_injury_medical_record,
-    ALL_INJURY_TERMS
+    is_injury_medical_record
 )
-from medical_text_refiner import medical_text_refiner, refine_medical_ocr_text
+from medical_text_refiner import medical_text_refiner
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -186,7 +184,7 @@ class EnhancedOCRProcessor:
         
         # Injury medical document specific Tesseract config
         # Optimized for better space detection in medical documents
-        config = """--oem 3 --psm 3 -c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz .,;:()[]{}/-+*=@#$%^&|<>?!"''"\s\\°× preserve_interword_spaces=1"""
+        _config = """--oem 3 --psm 3 -c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz .,;:()[]{}/-+*=@#$%^&|<>?!"''"\s\\°× preserve_interword_spaces=1"""
         
         try:
             # Get text and confidence data

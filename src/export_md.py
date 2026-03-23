@@ -1,6 +1,5 @@
 from __future__ import annotations
 from typing import Dict, Any
-from dataclasses import asdict
 
 def to_markdown(result: Dict[str, Any]) -> str:
     s = ["# Medical Summary\n"]

@@ -67,19 +67,19 @@ def get_available_engines() -> List[str]:
     
     # Check for optional engines
     try:
-        import easyocr
+        import easyocr  # noqa: F401
         engines.append("easyocr")
     except ImportError:
         pass
     
     try:
-        from paddleocr import PaddleOCR
+        from paddleocr import PaddleOCR  # noqa: F401
         engines.append("paddleocr")
     except ImportError:
         pass
     
     try:
-        from transformers import TrOCRProcessor
+        from transformers import TrOCRProcessor  # noqa: F401
         engines.append("trocr")
     except ImportError:
         pass
@@ -109,19 +109,19 @@ def validate_configuration() -> Dict[str, bool]:
     }
     
     try:
-        import easyocr
+        import easyocr  # noqa: F401
         status["easyocr"] = True
     except ImportError:
         pass
     
     try:
-        from paddleocr import PaddleOCR
+        from paddleocr import PaddleOCR  # noqa: F401
         status["paddleocr"] = True
     except ImportError:
         pass
     
     try:
-        from transformers import TrOCRProcessor
+        from transformers import TrOCRProcessor  # noqa: F401
         status["trocr"] = True
     except ImportError:
         pass
@@ -129,21 +129,21 @@ def validate_configuration() -> Dict[str, bool]:
     # Check external API configurations
     if GOOGLE_CLOUD_CONFIG["credentials_path"]:
         try:
-            from google.cloud import vision
+            from google.cloud import vision  # noqa: F401
             status["google_vision"] = True
         except ImportError:
             pass
     
     if AZURE_VISION_CONFIG["endpoint"] and AZURE_VISION_CONFIG["key"]:
         try:
-            from azure.cognitiveservices.vision.computervision import ComputerVisionClient
+            from azure.cognitiveservices.vision.computervision import ComputerVisionClient  # noqa: F401
             status["azure_vision"] = True
         except ImportError:
             pass
     
     if AWS_TEXTRACT_CONFIG["access_key_id"]:
         try:
-            import boto3
+            import boto3  # noqa: F401
             status["aws_textract"] = True
         except ImportError:
             pass

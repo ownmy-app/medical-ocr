@@ -5,7 +5,6 @@ This module contains terms, patterns, and validation logic specific to injury do
 
 from typing import Dict, List, Set, Tuple
 import re
-from datetime import datetime, timedelta
 
 # Injury-specific medical terminology
 INJURY_TYPES = {

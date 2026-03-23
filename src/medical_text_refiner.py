@@ -5,11 +5,10 @@ Specialized for medical records with multiple correction strategies.
 
 import re
 import difflib
-from typing import Dict, List, Tuple, Optional, Any, Set
-from collections import Counter
+from typing import Dict, List, Tuple, Optional, Any
 import logging
 from dataclasses import dataclass
-from injury_medical_vocabulary import ALL_INJURY_TERMS, INJURY_ABBREVIATIONS
+from injury_medical_vocabulary import ALL_INJURY_TERMS
 from legal_medical_vocabulary import (
     get_legal_medical_vocabulary, 
     get_legal_medical_abbreviations,
@@ -126,10 +125,8 @@ MEDICAL_WORD_PATTERNS = {
     
     # Units and measurements  
     r'\brng\b': 'mg',
-    r'\brnl\b': 'ml',
-    r'\bkq\b': 'kg',
     r'\blbs\b': 'lbs',
-    r'\bbrn\b': 'bpm',  # beats per minute
+    r'\bbrn\b': 'bpm',
 }
 
 @dataclass
@@ -295,17 +292,8 @@ class MedicalTextRefiner:
             r'(\d+)\s*rng\b': r'\1 mg',  # milligram
             r'(\d+)\s*rnl\b': r'\1 ml',  # milliliter
             r'(\d+)\s*kq\b': r'\1 kg',   # kilogram
-            r'\bpatienf\b': 'patient',
             r'\brnedical\b': 'medical',
             r'\bdiaqnosis\b': 'diagnosis',
-            r'\btreatrnent\b': 'treatment',
-            r'\brnedication\b': 'medication',
-            r'\bexarnination\b': 'examination',
-            r'\bhistorv\b': 'history',
-            r'\bprocedure\b': 'procedure',
-            r'\bcervicai\b': 'cervical',
-            r'\blurnbar\b': 'lumbar',
-            r'\bthoracic\b': 'thoracic',
         }
         
         for pattern, replacement in char_fixes.items():
