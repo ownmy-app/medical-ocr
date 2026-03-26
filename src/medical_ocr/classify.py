@@ -1,6 +1,6 @@
 from __future__ import annotations
 import re
-from config import RAD_IMPRESSION_HINTS, PROCEDURE_HINTS, LAB_HDR_HINTS, PHYS_LETTER_HINTS, SOAP_HEADINGS
+from .config import RAD_IMPRESSION_HINTS, PROCEDURE_HINTS, LAB_HDR_HINTS, PHYS_LETTER_HINTS, SOAP_HEADINGS
 
 def guess_doc_type(text: str) -> str:
     t = text.lower()

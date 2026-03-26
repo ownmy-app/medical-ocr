@@ -3,15 +3,15 @@ from typing import List, Tuple
 from datetime import datetime
 import re
 
-from models import OCRRecord, TimelineEvent, SummaryArtifacts
-from utils import normalize_ocr, parse_date
-from classify import guess_doc_type
-from sections import extract_soap_sections, extract_radiology, extract_labs, extract_surgery, extract_physician_letter
-from entities import (
+from .models import OCRRecord, TimelineEvent, SummaryArtifacts
+from .utils import normalize_ocr, parse_date
+from .classify import guess_doc_type
+from .sections import extract_soap_sections, extract_radiology, extract_labs, extract_surgery, extract_physician_letter
+from .entities import (
 find_provider, find_facility, extract_icd, extract_cpt, extract_meds, extract_body_parts,
 extract_restrictions, detect_mmi, detect_impairment, extract_future_needs, extract_causation
 )
-from qc import compute_gaps, find_inconsistent_histories, detect_referenced_missing
+from .qc import compute_gaps, find_inconsistent_histories, detect_referenced_missing
 
 def build_timeline(records: List[OCRRecord]) -> Tuple[List[TimelineEvent], SummaryArtifacts]:
     events: List[TimelineEvent] = []

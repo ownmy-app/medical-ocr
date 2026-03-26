@@ -1,7 +1,7 @@
 from __future__ import annotations
 import re
 from typing import Dict, Any, List
-from config import SOAP_HEADINGS
+from .config import SOAP_HEADINGS
 
 def extract_soap_sections(text: str) -> Dict[str, str]:
     sections = {"subjective": "", "objective": "", "assessment": "", "plan": ""}

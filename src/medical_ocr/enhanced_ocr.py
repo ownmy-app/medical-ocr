@@ -16,14 +16,14 @@ from dataclasses import dataclass, asdict
 from enum import Enum
 import io
 import time
-from injury_medical_vocabulary import (
+from .injury_medical_vocabulary import (
     calculate_injury_relevance_score, 
     extract_injury_structured_data,
     validate_injury_text_quality,
     enhance_injury_ocr_text,
     is_injury_medical_record
 )
-from medical_text_refiner import medical_text_refiner
+from .medical_text_refiner import medical_text_refiner
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

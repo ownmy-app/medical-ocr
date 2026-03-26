@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 import uvicorn
-from extractor import extract,OCR
-from pipeline import generate_summary
-from export_md import to_markdown
+from .extractor import extract,OCR
+from .pipeline import generate_summary
+from .export_md import to_markdown
 import uuid
 import os
 from typing import Any, Dict, List, Optional

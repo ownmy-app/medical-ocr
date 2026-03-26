@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import List, Dict
-from models import TimelineEvent, SummaryArtifacts
-from utils import expand_abbreviations_for_summary, join_unique
+from .models import TimelineEvent, SummaryArtifacts
+from .utils import expand_abbreviations_for_summary, join_unique
 
 def craft_summary(events: List[TimelineEvent], artifacts: SummaryArtifacts, max_chars: int = 2000) -> str:
     if not events:

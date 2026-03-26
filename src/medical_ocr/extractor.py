@@ -1,9 +1,9 @@
 from pdf2image import convert_from_path
 import pytesseract
-import utils
-from parser_patient_details import PatientDetailsParser
-from parser_prescription import PrescriptionParser
-from enhanced_ocr import extract_page_text
+from . import utils
+from .parser_patient_details import PatientDetailsParser
+from .parser_prescription import PrescriptionParser
+from .enhanced_ocr import extract_page_text
 import logging
 from typing import Dict, Any
 

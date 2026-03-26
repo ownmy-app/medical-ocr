@@ -13,7 +13,7 @@ brew install tesseract poppler          # macOS
 apt-get install tesseract-ocr poppler-utils   # Ubuntu
 
 # Clone and install (base, no heavy GPU deps)
-git clone https://github.com/ownmy-app/medical-ocr
+git clone https://github.com/nometria/medical-ocr
 cd medical-ocr
 pip install -e .
 

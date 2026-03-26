@@ -1,9 +1,9 @@
 from __future__ import annotations
 from typing import List, Dict, Any
 from dataclasses import asdict
-from models import OCRRecord
-from timeline import build_timeline
-from summary import craft_summary, attorney_faq
+from .models import OCRRecord
+from .timeline import build_timeline
+from .summary import craft_summary, attorney_faq
 
 def generate_summary(ocr_records: List[Dict[str, Any]], target_chars: int = 2000) -> Dict[str, Any]:
     records = []
