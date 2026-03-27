@@ -1,7 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
 import uvicorn
-from .extractor import extract,OCR
-from .pipeline import generate_summary
+from .extractor import extract, OCR
+from .pipeline import generate_summary, generate_summary_with_confidence
 from .export_md import to_markdown
 import uuid
 import os
@@ -13,7 +13,7 @@ from urllib.parse import urlparse
 import json
 
 import requests
-from fastapi import HTTPException,Body
+from fastapi import HTTPException, Body
 
 from fastapi.middleware.cors import CORSMiddleware
 from openai import OpenAI
@@ -394,6 +394,135 @@ def extract_from_doc(
                 os.remove(tmp_path)
         except Exception:
             pass
+
+
+# ─── In-memory case document store ────────────────────────────────────────────
+_case_documents: Dict[str, List[Dict[str, Any]]] = {}
+
+
+@app.post("/cases/{case_id}/documents")
+async def batch_upload_documents(
+    case_id: str,
+    files: List[UploadFile] = File(...),
+):
+    """
+    Batch endpoint: upload multiple documents for a case.
+
+    Accepts multiple files in one request, processes each through the OCR
+    pipeline, and returns an array of results with per-page and overall
+    confidence scores.  Results are tracked by case_id.
+    """
+    if not files:
+        raise HTTPException(status_code=400, detail="No files provided.")
+
+    results: List[Dict[str, Any]] = []
+    tmp_paths: List[str] = []
+
+    for upload_file in files:
+        tmp_path = None
+        try:
+            # Save uploaded file to temp location
+            _, ext = os.path.splitext(upload_file.filename or "")
+            ext = ext if ext else ".pdf"
+            tmp_path = os.path.join(UPLOAD_DIR, f"{uuid.uuid4()}{ext}")
+            tmp_paths.append(tmp_path)
+
+            with open(tmp_path, "wb") as f_out:
+                content = await upload_file.read()
+                f_out.write(content)
+
+            # Run OCR
+            ocr_result = OCR(tmp_path)
+
+            # Extract page-level confidence from metadata
+            metadata = ocr_result.get("_metadata", {})
+            page_metrics = metadata.get("page_metrics", {})
+            processing_summary = metadata.get("processing_summary", {})
+
+            # Build per-page confidence array
+            page_confidences = []
+            for page_num in sorted(page_metrics.keys(), key=lambda x: int(x)):
+                pm = page_metrics[page_num]
+                page_confidences.append({
+                    "page": int(page_num),
+                    "confidence": round(pm.get("confidence", 0.0), 4),
+                    "quality_score": round(pm.get("quality_score", 0.0), 4),
+                    "engine_used": pm.get("engine_used", "unknown"),
+                })
+
+            # Overall document confidence (average of page confidences)
+            if page_confidences:
+                avg_confidence = sum(
+                    pc["confidence"] for pc in page_confidences
+                ) / len(page_confidences)
+            else:
+                avg_confidence = processing_summary.get("avg_confidence", 0.0)
+
+            # Collect page text for summary
+            page_texts = []
+            for key, val in ocr_result.items():
+                if key.startswith("_"):
+                    continue
+                if isinstance(val, str):
+                    page_texts.append(val)
+            full_text = "\n".join(page_texts)
+
+            doc_result = {
+                "document_id": str(uuid.uuid4()),
+                "case_id": case_id,
+                "filename": upload_file.filename,
+                "total_pages": metadata.get("total_pages", len(page_texts)),
+                "text": full_text,
+                "confidence": {
+                    "overall": round(avg_confidence, 4),
+                    "per_page": page_confidences,
+                },
+                "processing_summary": processing_summary,
+                "error": None,
+            }
+            results.append(doc_result)
+
+        except Exception as exc:
+            results.append({
+                "document_id": str(uuid.uuid4()),
+                "case_id": case_id,
+                "filename": upload_file.filename or "unknown",
+                "total_pages": 0,
+                "text": "",
+                "confidence": {"overall": 0.0, "per_page": []},
+                "processing_summary": {},
+                "error": str(exc),
+            })
+
+    # Store results by case_id
+    if case_id not in _case_documents:
+        _case_documents[case_id] = []
+    _case_documents[case_id].extend(results)
+
+    # Clean up temp files
+    for tmp_path in tmp_paths:
+        try:
+            if tmp_path and os.path.exists(tmp_path):
+                os.remove(tmp_path)
+        except Exception:
+            pass
+
+    return {
+        "case_id": case_id,
+        "documents_processed": len(results),
+        "results": results,
+    }
+
+
+@app.get("/cases/{case_id}/documents")
+def get_case_documents(case_id: str):
+    """Retrieve all processed documents for a case."""
+    docs = _case_documents.get(case_id, [])
+    return {
+        "case_id": case_id,
+        "document_count": len(docs),
+        "documents": docs,
+    }
 
 
 def normalize_schema(schema):

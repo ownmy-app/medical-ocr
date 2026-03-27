@@ -59,19 +59,25 @@ pip install -e ".[gcp]"   # Google Cloud Vision (fallback engine)
 ## Architecture
 
 ```
-POST /process-document   →  upload file (PDF/image)
-                         →  OCR (Tesseract → EasyOCR → GCV fallback)
-                         →  classify document type
-                         →  extract structured fields
-                         →  update timeline
-                         →  return JSON
+POST /extract_file                  →  upload single file (PDF or image)
+                                    →  OCR (Tesseract → EasyOCR → GCV fallback)
+                                    →  return per-page text + quality metrics
 
-POST /generate-summary   →  takes all processed documents for a case
-                         →  builds chronological timeline
-                         →  generates attorney summary
-                         →  returns DOCX + JSON
+POST /extract_from_doc              →  upload file(s) with structured extraction
+                                    →  OCR + classify document type
+                                    →  extract structured fields
+                                    →  generate timeline + summary
+                                    →  return JSON
 
-GET  /health
+POST /cases/{case_id}/documents     →  batch upload multiple files for a case
+                                    →  process each through the OCR pipeline
+                                    →  return array of results with confidence scores
+                                    →  track by case_id
+
+GET  /cases/{case_id}/documents     →  retrieve all processed documents for a case
+
+POST /ai/invoke                     →  LLM invocation for PI assessment
+POST /ai/generate-image             →  image generation via DALL-E
 ```
 
 ---
@@ -103,10 +109,82 @@ docker run -p 8000:8000 --env-file .env medical-ocr
 
 ---
 
+## Batch endpoint
+
+Upload multiple documents for a case in a single request:
+
+```bash
+curl -X POST http://localhost:9080/cases/case-001/documents \
+  -F "files=@report1.pdf" \
+  -F "files=@report2.pdf" \
+  -F "files=@scan.jpg"
+```
+
+Response includes per-document results with confidence scores:
+
+```json
+{
+  "case_id": "case-001",
+  "documents_processed": 3,
+  "results": [
+    {
+      "document_id": "...",
+      "filename": "report1.pdf",
+      "total_pages": 4,
+      "text": "...",
+      "confidence": {
+        "overall": 0.87,
+        "per_page": [
+          {"page": 1, "confidence": 0.91, "quality_score": 0.85, "engine_used": "advanced_fusion"},
+          {"page": 2, "confidence": 0.83, "quality_score": 0.80, "engine_used": "tesseract_v1"}
+        ]
+      }
+    }
+  ]
+}
+```
+
+Retrieve all processed documents for a case:
+
+```bash
+curl http://localhost:9080/cases/case-001/documents
+```
+
+---
+
+## Confidence scoring
+
+Every OCR result now includes confidence scores at two levels:
+
+- **Per-page confidence** — from the OCR engine (Tesseract word-level confidence averaged, or quality heuristics when engine data is unavailable)
+- **Overall document confidence** — average of all page confidences
+
+Confidence is available in:
+- The batch endpoint response (`confidence.overall`, `confidence.per_page`)
+- The OCR metadata (`_metadata.page_metrics.{page}.confidence`)
+- The pipeline summary via `generate_summary_with_confidence()`
+
+---
+
+## Supported file formats
+
+| Format | Extensions | Notes |
+|--------|-----------|-------|
+| PDF | `.pdf` | Multi-page supported via pdf2image/poppler |
+| PNG | `.png` | Single image |
+| JPEG | `.jpg`, `.jpeg` | Single image |
+| TIFF | `.tiff`, `.tif` | Multi-frame TIFFs expanded into separate pages |
+| BMP | `.bmp` | Single image |
+| WebP | `.webp` | Single image |
+
+PDF files are rasterised at 300 DPI by default. Image files are loaded directly via Pillow.
+
+---
+
 ## Immediate next steps (to productionise as B2B SaaS)
-1. Add `POST /cases/{case_id}/documents` batch endpoint
-2. Add per-document confidence scores to the API response
-3. Add PDF ingestion (currently image/scan input only)
+1. ~~Add `POST /cases/{case_id}/documents` batch endpoint~~ Done
+2. ~~Add per-document confidence scores to the API response~~ Done
+3. ~~Add PDF ingestion (currently image/scan input only)~~ Done (PDF + image)
 4. Add HIPAA-compliant storage (S3 + KMS encryption)
 5. Build a simple React UI for law firm case managers
 6. Cold-email 10 personal injury law firms with a free trial offer

@@ -4,6 +4,7 @@ from . import utils
 from .parser_patient_details import PatientDetailsParser
 from .parser_prescription import PrescriptionParser
 from .enhanced_ocr import extract_page_text
+from .ingest import ingest_file, get_supported_extensions
 import logging
 from typing import Dict, Any
 
@@ -32,17 +33,22 @@ def OCR_old(file_path):
 def OCR(file_path: str) -> Dict[str, Any]:
     """
     Enhanced OCR function using multiple engines for better accuracy.
+    Supports both PDF and image files (PNG, JPG, TIFF, BMP, WEBP).
+
+    For PDFs: pages are extracted via pdf2image/poppler and processed individually.
+    For images: loaded directly via Pillow (multi-frame TIFF supported).
+
     Returns page-level text extraction with quality metrics.
     """
-    logger.info(f"🔄 Starting enhanced OCR processing for: {file_path}")
-    
-    # 1. Convert PDF to images
+    logger.info(f"Starting enhanced OCR processing for: {file_path}")
+
+    # 1. Convert file to page images (handles both PDF and image formats)
     try:
-        pages = convert_from_path(file_path)
-        logger.info(f"📄 Converted PDF to {len(pages)} page images")
+        pages = ingest_file(file_path)
+        logger.info(f"Ingested file into {len(pages)} page image(s)")
     except Exception as e:
-        logger.error(f"❌ Failed to convert PDF to images: {e}")
-        return {"error": f"PDF conversion failed: {str(e)}"}
+        logger.error(f"Failed to ingest file: {e}")
+        return {"error": f"File ingestion failed: {str(e)}"}
     
     # 2. Process each page with enhanced OCR
     data = {}

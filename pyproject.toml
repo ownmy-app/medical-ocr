@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "medical-ocr"
-version = "0.1.2"
+version = "0.2.0"
 description = "Medical document OCR pipeline: extract, structure, and export text from medical/legal PDFs."
 readme = "README.md"
 license = { text = "MIT" }
@@ -14,6 +14,7 @@ dependencies = [
     "fastapi>=0.115.0",
     "uvicorn[standard]>=0.30.0",
     "python-dotenv>=1.0.0",
+    "python-multipart>=0.0.6",
     "openai>=1.0.0",
     "pytesseract>=0.3.13",
     "Pillow>=10.0.0",
@@ -26,6 +27,7 @@ dependencies = [
 dev = ["pytest>=8.0", "pytest-cov"]
 gpu = ["easyocr>=1.7.0", "opencv-python>=4.6.0", "scikit-image>=0.24.0"]
 gcp = ["google-cloud-vision>=3.7.0"]
+pdf = ["PyPDF2>=3.0.0"]
 
 [project.scripts]
 medical-ocr = "medical_ocr.main:main"
