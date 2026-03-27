@@ -16,22 +16,14 @@ import requests
 from fastapi import HTTPException, Body
 
 from fastapi.middleware.cors import CORSMiddleware
-from openai import OpenAI
 from dotenv import load_dotenv
+
+from .llm import ask_llm, generate_image as llm_generate_image, get_provider, get_model
 
 # Load environment variables
 load_dotenv()
 
-# Initialize OpenAI client
-print("🤖 Initializing OpenAI client...")
-openai_api_key = os.getenv("OPENAI_API_KEY")
-if openai_api_key:
-    print("✅ OpenAI API key found in environment")
-    openai_client = OpenAI(api_key=openai_api_key)
-    print("✅ OpenAI client initialized successfully")
-else:
-    print("⚠️ Warning: OPENAI_API_KEY not found in environment variables")
-    openai_client = None
+print(f"🤖 LLM provider: {get_provider()} | model: {get_model()}")
 
 app = FastAPI()
 
@@ -526,66 +518,38 @@ def get_case_documents(case_id: str):
 
 
 def normalize_schema(schema):
-    """Normalize JSON schema for OpenAI structured outputs"""
+    """Normalize JSON schema for structured outputs."""
     print("🔧 Normalizing schema...")
     if not schema:
         print("📋 No schema provided")
         return schema
-    
+
     print(f"📋 Schema type: {schema.get('type', 'undefined')}")
     print(f"📋 Schema keys: {list(schema.keys())}")
-    
-    # shallow clone is fine here; deepen if you plan nested strictness
+
     copy = dict(schema)
     if copy.get("type") == "object" and "additionalProperties" not in copy:
         copy["additionalProperties"] = False
         print("🔧 Added additionalProperties: false")
-    
+
     print("✅ Schema normalization completed")
     return copy
 
 
-def parse_pi_assessment(resp, schema):
-    """Parse PI assessment response from OpenAI"""
+def parse_pi_assessment(text: str, schema):
+    """
+    Parse PI assessment from raw LLM text output.
+
+    Previously this accepted a provider-specific response object; now it takes
+    the plain-text string returned by ``ask_llm``.
+    """
     print("🔄 Starting parse_pi_assessment...")
     print(f"📋 Schema provided: {schema is not None}")
-    
-    # Extract the text blob (Responses API variations handled)
-    text = None
-    
-    # Try different response formats
-    print("🔍 Attempting to extract text from response...")
-    if hasattr(resp, 'output_text'):
-        text = resp.output_text
-        print("✅ Found text via output_text attribute")
-    elif hasattr(resp, 'output') and resp.output:
-        print("🔍 Searching through output array...")
-        for i, item in enumerate(resp.output):
-            print(f"  - Checking output item {i}")
-            if hasattr(item, 'content') and item.content:
-                for j, content in enumerate(item.content):
-                    print(f"    - Checking content item {j}")
-                    if hasattr(content, 'text'):
-                        text = content.text
-                        print("✅ Found text via output.content.text")
-                        break
-                    elif hasattr(content, 'output_text'):
-                        text = content.output_text
-                        print("✅ Found text via output.content.output_text")
-                        break
-                if text:
-                    break
-    elif hasattr(resp, 'choices') and resp.choices:
-        # Standard chat completion format
-        text = resp.choices[0].message.content
-        print("✅ Found text via choices[0].message.content")
-    
-    if not text:
-        print("❌ Could not extract text from response")
-        print(f"🔍 Response attributes: {dir(resp)}")
-        raise HTTPException(status_code=500, detail="Could not find model JSON in response")
 
-    print(f"📝 Extracted text length: {len(text)} characters")
+    if not text:
+        raise HTTPException(status_code=500, detail="Empty response from LLM")
+
+    print(f"📝 Text length: {len(text)} characters")
     print(f"📝 Text preview: {text[:200]}...")
 
     # Parse JSON
@@ -603,12 +567,12 @@ def parse_pi_assessment(resp, schema):
     if schema and "viability_score" in data and isinstance(data["viability_score"], (int, float)):
         print(f"🔧 Processing viability_score: {data['viability_score']}")
         original_score = data["viability_score"]
-        
+
         # If model produced 0..1, scale to 1..10
         if data["viability_score"] > 0 and data["viability_score"] <= 1:
             data["viability_score"] = data["viability_score"] * 10
             print(f"  - Scaled from 0-1 range: {original_score} -> {data['viability_score']}")
-        
+
         # Clamp to [1, 10] and round to 2 decimals
         if data["viability_score"] < 1:
             data["viability_score"] = 1
@@ -616,7 +580,7 @@ def parse_pi_assessment(resp, schema):
         if data["viability_score"] > 10:
             data["viability_score"] = 10
             print(f"  - Clamped to maximum: {original_score} -> 10")
-        
+
         data["viability_score"] = round(data["viability_score"] * 100) / 100
         print(f"  - Final viability_score: {data['viability_score']}")
 
@@ -627,7 +591,7 @@ def parse_pi_assessment(resp, schema):
             data["strengths"] = []
         else:
             print(f"✅ Strengths is array with {len(data['strengths'])} items")
-    
+
     if "weaknesses" in data:
         if not isinstance(data.get("weaknesses"), list):
             print("🔧 Converting weaknesses to empty array")
@@ -646,158 +610,83 @@ def parse_pi_assessment(resp, schema):
 
 @app.post("/ai/invoke")
 def invoke_llm(payload: dict = Body(...)):
-    """Backend endpoint for LLM invocation"""
+    """
+    Backend endpoint for LLM invocation.
+
+    Routes through the multi-LLM abstraction (see ``llm.py``).  The provider
+    is selected via the ``LLM_PROVIDER`` env var (openai | anthropic | litellm).
+    """
     print("🚀 /ai/invoke endpoint called")
     print(f"📨 Received payload keys: {list(payload.keys())}")
-    
-    # Check if OpenAI client is available
-    if openai_client is None:
-        print("❌ Error: OpenAI client not initialized (missing API key)")
-        raise HTTPException(status_code=500, detail="OpenAI API not configured")
-    
+    print(f"🤖 Using provider={get_provider()}, model={get_model()}")
+
     try:
         prompt = payload.get("prompt")
         add_context_from_internet = payload.get("add_context_from_internet", False)
         response_json_schema = payload.get("response_json_schema")
         file_urls = payload.get("file_urls")
-        
+
         print("🔍 Extracted parameters:")
         print(f"  - Prompt length: {len(prompt) if prompt else 0} characters")
         print(f"  - Context from internet: {add_context_from_internet}")
         print(f"  - Has schema: {response_json_schema is not None}")
         print(f"  - File URLs: {file_urls}")
-        
+
         if not prompt:
             print("❌ Error: No prompt provided")
             raise HTTPException(status_code=400, detail="Prompt is required")
-        
-        # If we have a schema, use structured outputs
+
+        # --- Structured JSON output (PI assessment or schema-driven) ----------
         if response_json_schema:
             print("🔧 Using structured outputs with schema")
             normalized_schema = normalize_schema(response_json_schema)
             print(f"📋 Normalized schema keys: {list(normalized_schema.keys()) if normalized_schema else None}")
-            
-            try:
-                print("🤖 Attempting OpenAI Responses API call...")
-                # Try using the responses API for structured outputs
-                resp = openai_client.responses.create(
-                    model="gpt-5",
-                    reasoning={"effort": "medium"},
-                    input=[
-                        {
-                            "role": "system",
-                            "content": [
-                                {
-                                    "type": "input_text",
-                                    "text": "You are an experienced U.S. personal-injury attorney. "
-                                           "Return your answer strictly as JSON that matches the provided schema. "
-                                           "No prose outside JSON.",
-                                }
-                            ],
-                        },
-                        {
-                            "role": "user",
-                            "content": [{"type": "input_text", "text": prompt}],
-                        },
-                    ],
-                    text={
-                        "format": {
-                            "type": "json_schema",
-                            "name": "assessment_response",
-                            "schema": normalized_schema,
-                            "strict": False
-                        },
-                    },
-                )
-                
-                print("✅ OpenAI Responses API call successful")
-                print("🔄 Parsing PI assessment response...")
-                
-                result = parse_pi_assessment(resp, normalized_schema)
-                print("✅ Successfully parsed PI assessment")
-                print(f"📊 Result keys: {list(result.keys()) if isinstance(result, dict) else 'Not a dict'}")
-                
-                response_data = {
-                    "data": {
-                        "message": result,
-                    }
+
+            system_msg = (
+                "You are an experienced U.S. personal-injury attorney. "
+                "Return your answer strictly as JSON that matches the provided schema. "
+                "No prose outside JSON.\n\n"
+                f"Schema: {json.dumps(normalized_schema)}"
+            )
+
+            print("🤖 Calling ask_llm (structured)...")
+            raw_text = ask_llm(
+                prompt=prompt,
+                system=system_msg,
+                response_json=True,
+            )
+            print(f"✅ LLM responded ({len(raw_text)} chars)")
+
+            result = parse_pi_assessment(raw_text, normalized_schema)
+            print("✅ Successfully parsed PI assessment")
+            print(f"📊 Result keys: {list(result.keys()) if isinstance(result, dict) else 'Not a dict'}")
+
+            response_data = {
+                "data": {
+                    "message": result,
                 }
-                print("🎯 Returning structured response")
-                return response_data
-                
-            except Exception as e:
-                # Fall back to regular chat completion if responses API fails
-                print(f"⚠️ Responses API failed, falling back to chat completion: {e}")
-                print("🤖 Attempting OpenAI Chat Completion API call...")
-                
-                response = openai_client.chat.completions.create(
-                    model="gpt-4o",
-                    messages=[
-                        {
-                            "role": "system",
-                            "content": "You are a helpful assistant. Return your response as JSON if a schema is provided."
-                        },
-                        {
-                            "role": "user",
-                            "content": prompt
-                        }
-                    ],
-                    response_format={"type": "json_object"} if response_json_schema else None
-                )
-                
-                print("✅ OpenAI Chat Completion API call successful")
-                content = response.choices[0].message.content
-                print(f"📝 Received content length: {len(content)} characters")
-                
-                try:
-                    print("🔄 Attempting to parse JSON response...")
-                    parsed_content = json.loads(content) if response_json_schema else content
-                    print("✅ Successfully parsed JSON")
-                    
-                    response_data = {
-                        "data": {
-                            "message": parsed_content,
-                        }
-                    }
-                    print("🎯 Returning fallback structured response")
-                    return response_data
-                except json.JSONDecodeError as json_error:
-                    print(f"⚠️ JSON parsing failed: {json_error}")
-                    print("📝 Returning raw content")
-                    return {
-                        "data": {
-                            "message": content,
-                        }
-                    }
+            }
+            print("🎯 Returning structured response")
+            return response_data
+
+        # --- Plain text response ----------------------------------------------
         else:
             print("💬 Using regular text response (no schema)")
-            print("🤖 Making OpenAI Chat Completion API call...")
-            
-            # Regular text response
-            response = openai_client.chat.completions.create(
-                model="gpt-4o",
-                messages=[
-                    {
-                        "role": "system",
-                        "content": "You are a helpful assistant."
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ]
+            print("🤖 Calling ask_llm (text)...")
+
+            content = ask_llm(
+                prompt=prompt,
+                system="You are a helpful assistant.",
             )
-            
-            print("✅ OpenAI API call successful")
-            content = response.choices[0].message.content
-            print(f"📝 Received response length: {len(content)} characters")
-            
+
+            print(f"✅ LLM responded ({len(content)} chars)")
+
             response_data = {
                 "response": content
             }
             print("🎯 Returning text response")
             return response_data
-            
+
     except HTTPException as http_error:
         print(f"🚫 HTTP Exception: {http_error.detail}")
         raise
@@ -808,48 +697,38 @@ def invoke_llm(payload: dict = Body(...)):
 
 
 @app.post("/ai/generate-image")
-def generate_image(payload: dict = Body(...)):
-    """Backend endpoint for image generation"""
+def generate_image_endpoint(payload: dict = Body(...)):
+    """
+    Backend endpoint for image generation.
+
+    NOTE: Image generation is OpenAI-only (DALL-E).  ``OPENAI_API_KEY`` must be
+    set even when ``LLM_PROVIDER`` points to another provider.
+    """
     print("🎨 /ai/generate-image endpoint called")
     print(f"📨 Received payload keys: {list(payload.keys())}")
-    
-    # Check if OpenAI client is available
-    if openai_client is None:
-        print("❌ Error: OpenAI client not initialized (missing API key)")
-        raise HTTPException(status_code=500, detail="OpenAI API not configured")
-    
+
     try:
         prompt = payload.get("prompt")
-        
+
         print("🔍 Extracted parameters:")
         print(f"  - Prompt length: {len(prompt) if prompt else 0} characters")
         print(f"  - Prompt preview: {prompt[:100] if prompt else 'None'}...")
-        
+
         if not prompt:
             print("❌ Error: No prompt provided")
             raise HTTPException(status_code=400, detail="Prompt is required")
-        
-        print("🤖 Making OpenAI DALL-E API call...")
-        print("  - Model: dall-e-3")
-        print("  - Size: 1024x1024")
-        print("  - Quality: standard")
-        
-        response = openai_client.images.generate(
-            model="dall-e-3",
-            prompt=prompt,
-            size="1024x1024",
-            quality="standard",
-            n=1,
-        )
-        
-        print("✅ OpenAI DALL-E API call successful")
-        image_url = response.data[0].url
+
+        print("🤖 Making DALL-E API call (OpenAI-only)...")
+
+        image_url = llm_generate_image(prompt)
+
+        print("✅ DALL-E API call successful")
         print(f"🖼️ Generated image URL: {image_url[:50]}...")
-        
+
         response_data = {"url": image_url}
         print("🎯 Returning image response")
         return response_data
-        
+
     except HTTPException as http_error:
         print(f"🚫 HTTP Exception: {http_error.detail}")
         raise

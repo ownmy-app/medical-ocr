@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  medical-ocr:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      # --- LLM provider (pick one) ---
+      # "openai" (default) | "anthropic" | "litellm"
+      - LLM_PROVIDER=openai
+      # Model override (leave blank for provider default)
+      # openai default: gpt-4o | anthropic default: claude-sonnet-4-20250514
+      - LLM_MODEL=
+      # --- API keys (set the one matching your provider) ---
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+    volumes:
+      - uploads:/app/uploads
+    restart: unless-stopped
+
+volumes:
+  uploads:

@@ -30,10 +30,23 @@ medical-ocr --api
 pytest tests/ -v
 ```
 
-Optional heavy dependencies:
+### One-click Docker start
+
 ```bash
-pip install -e ".[gpu]"   # EasyOCR + OpenCV (GPU-accelerated secondary engine)
-pip install -e ".[gcp]"   # Google Cloud Vision (fallback engine)
+# Set your API key and launch
+export OPENAI_API_KEY=sk-proj-...
+docker compose up --build
+
+# API is now available at http://localhost:8000
+```
+
+### Optional dependencies
+
+```bash
+pip install -e ".[gpu]"        # EasyOCR + OpenCV (GPU-accelerated secondary engine)
+pip install -e ".[gcp]"        # Google Cloud Vision (fallback engine)
+pip install -e ".[anthropic]"  # Use Anthropic Claude as LLM provider
+pip install -e ".[litellm]"    # Use any LiteLLM-supported provider
 ```
 
 ---
@@ -100,10 +113,37 @@ uvicorn medical_ocr.main:app --port 8000
 
 ---
 
+## Multi-LLM support
+
+The AI endpoints (`/ai/invoke`, `/ai/generate-image`) support multiple LLM backends.
+Set the provider via environment variables:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `LLM_PROVIDER` | `openai` | `openai`, `anthropic`, or `litellm` |
+| `LLM_MODEL` | per-provider | Model name override (e.g. `gpt-4o`, `claude-sonnet-4-20250514`) |
+| `OPENAI_API_KEY` | required for openai + image gen | OpenAI API key |
+| `ANTHROPIC_API_KEY` | required for anthropic | Anthropic API key |
+
+```bash
+# Use Anthropic Claude
+export LLM_PROVIDER=anthropic
+export ANTHROPIC_API_KEY=sk-ant-...
+
+# Use any LiteLLM-supported model
+export LLM_PROVIDER=litellm
+export LLM_MODEL=together_ai/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo
+```
+
+Image generation (`/ai/generate-image`) always uses OpenAI DALL-E regardless of `LLM_PROVIDER`.
+
+---
+
 ## Docker
 
 ```bash
-docker build -t medical-ocr .
+docker compose up --build              # recommended (uses docker-compose.yml)
+docker build -t medical-ocr .          # or build manually
 docker run -p 8000:8000 --env-file .env medical-ocr
 ```
 

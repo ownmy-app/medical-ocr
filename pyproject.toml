@@ -28,6 +28,8 @@ dev = ["pytest>=8.0", "pytest-cov"]
 gpu = ["easyocr>=1.7.0", "opencv-python>=4.6.0", "scikit-image>=0.24.0"]
 gcp = ["google-cloud-vision>=3.7.0"]
 pdf = ["PyPDF2>=3.0.0"]
+anthropic = ["anthropic>=0.39.0"]
+litellm = ["litellm>=1.50.0"]
 
 [project.scripts]
 medical-ocr = "medical_ocr.main:main"
