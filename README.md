@@ -1,5 +1,9 @@
 # medical-ocr
 
+<p align="center">
+  <b>Built by <a href="https://nometria.com">Nometria</a></b> — We take AI-built apps to production.
+</p>
+
 > Multi-engine OCR pipeline for medical and legal documents.
 > Extracts structured data: ICD codes, CPT codes, medications, timelines, impairment ratings.
 
@@ -246,6 +250,28 @@ PDF files are rasterised at 300 DPI by default. Image files are loaded directly 
 - Domain-specific medical vocabulary with relevance scoring
 - Multi-engine fallback → higher accuracy than single-engine tools
 - Attorney-ready output format → no manual reformatting needed
+
+---
+
+---
+
+## Built by Nometria
+
+<a href="https://nometria.com">
+  <img src="https://img.shields.io/badge/nometria.com-Take%20AI%20apps%20to%20production-111827?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTIgMkw0IDdWMTdMMTIgMjJMMjAgMTdWN0wxMiAyWiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9zdmc+" alt="Nometria" />
+</a>
+
+**medical-ocr** is open source and free to use. It's one of the developer tools we built while helping teams ship AI-generated apps to production.
+
+A legal tech customer needed to extract structured data from medical records. We built this multi-engine OCR pipeline and it became its own product.
+
+**What Nometria does:**
+- :rocket: **Deploy AI apps to AWS** -- one click, production-ready
+- :lock: **Security & compliance** -- SOC 2, HIPAA-ready infrastructure
+- :chart_with_upwards_trend: **Scale reliably** -- handles real user traffic from day one
+- :wrench: **Full source code ownership** -- you own everything, no lock-in
+
+If you're building with AI tools (Base44, Lovable, Bolt, Replit, Cursor) and need to go to production -- **[nometria.com](https://nometria.com)**
 
 ---
 
