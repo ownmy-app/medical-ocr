@@ -1,16 +1,6 @@
 # medical-ocr
 
-<div align="center">
-
-**[Nometria](https://nometria.com)** takes AI-built apps to production on AWS — secure, scalable, ready for real users.
-
-<sub><i>A legal tech customer needed to extract structured data from medical records. We built this multi-engine OCR pipeline and it became its own product.</i></sub>
-
-[![Deploy with Nometria](https://img.shields.io/badge/Deploy%20with-Nometria-111827?style=for-the-badge)](https://nometria.com)
-
-</div>
-
----
+Built by the [Nometria](https://nometria.com) team — we take AI-built apps to production.
 
 > Multi-engine OCR pipeline for medical and legal documents.
 > Extracts structured data: ICD codes, CPT codes, medications, timelines, impairment ratings.
@@ -289,6 +279,3 @@ Note: cv2 failures are expected without `pip install -e ".[gpu]"`
 
 See `examples/sample-output.json` for the full structured JSON output from a real IME report.
 
----
-
-<p align="center">Made with ❤️ by <a href="https://nometria.com">Nometria</a> — deploy AI apps to production in one click</p>
