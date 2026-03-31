@@ -11,7 +11,7 @@ All paths return a list of PIL.Image.Image objects (one per page/frame).
 import logging
 import os
 from pathlib import Path
-from typing import List, Optional
+from typing import List
 
 from PIL import Image
 

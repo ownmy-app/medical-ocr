@@ -4,7 +4,7 @@ from . import utils
 from .parser_patient_details import PatientDetailsParser
 from .parser_prescription import PrescriptionParser
 from .enhanced_ocr import extract_page_text
-from .ingest import ingest_file, get_supported_extensions
+from .ingest import ingest_file
 import logging
 from typing import Dict, Any
 

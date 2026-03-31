@@ -1,7 +1,7 @@
 from fastapi import FastAPI, File, UploadFile
 import uvicorn
 from .extractor import extract, OCR
-from .pipeline import generate_summary, generate_summary_with_confidence
+from .pipeline import generate_summary
 from .export_md import to_markdown
 import uuid
 import os
