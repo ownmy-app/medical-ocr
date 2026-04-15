@@ -63,8 +63,8 @@ LAB_HDR_HINTS = [r"\blaboratory\b", r"\blabs?\b", r"\bresults\b", r"\breference\
 PHYS_LETTER_HINTS = [r"^to:\s", r"^dear\s", r"\bon\s+behalf\s+of\b"]
 
 SOAP_HEADINGS = {
-"subjective": r"^\ssubjective\s[:\-]",
-"objective": r"^\sobjective\s[:\-]",
-"assessment": r"^\sassessment\s[:\-]",
-"plan": r"^\splan\s[:\-]",
+"subjective": r"(?:^|\n)\s*subjective\s*[:\-]",
+"objective": r"(?:^|\n)\s*objective\s*[:\-]",
+"assessment": r"(?:^|\n)\s*assessment\s*[:\-]",
+"plan": r"(?:^|\n)\s*plan\s*[:\-]",
 }

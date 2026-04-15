@@ -45,7 +45,11 @@ def build_timeline(records: List[OCRRecord]) -> Tuple[List[TimelineEvent], Summa
         artifacts.future_needs_snippets.extend(fneeds)
 
         caus = extract_causation(raw)
-        artifacts.causation_statements.extend(caus)
+        if caus:
+            if isinstance(caus, list):
+                artifacts.causation_statements.extend(caus)
+            else:
+                artifacts.causation_statements.append(str(caus))
 
         title = dtype
         plan = None

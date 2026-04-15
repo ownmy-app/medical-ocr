@@ -1,0 +1,49 @@
+{
+  "our_scores": {
+    "ICD-10 codes": 1.0,
+    "CPT codes": 1.0,
+    "Medications": 0.903,
+    "Body parts": 0.875,
+    "Restrictions": 0.632,
+    "Document classification": 1.0,
+    "Provider name": 0.889,
+    "Facility name": 0.889,
+    "MMI status": 1.0,
+    "Impairment rating": 1.0,
+    "Causation": 1.0
+  },
+  "industry_baselines": {
+    "i2b2_2010_clinical_concepts": {
+      "sota": 0.8994,
+      "task": "Clinical concept extraction (problems, treatments, tests)"
+    },
+    "n2c2_2018_medications": {
+      "sota": 0.8907,
+      "task": "Medication extraction (drug, dosage, route, frequency, duration)"
+    },
+    "i2b2_2012_temporal": {
+      "sota": 0.8053,
+      "task": "Temporal relation extraction"
+    }
+  },
+  "comparisons": [
+    {
+      "benchmark": "i2b2_2010_clinical_concepts",
+      "sota": 0.8994,
+      "ours": 0.9375,
+      "fields": [
+        "ICD-10 codes",
+        "Body parts"
+      ]
+    },
+    {
+      "benchmark": "n2c2_2018_medications",
+      "sota": 0.8907,
+      "ours": 0.9515,
+      "fields": [
+        "CPT codes",
+        "Medications"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,983 @@
+{
+  "extraction_accuracy": {
+    "per_document": {
+      "soap_note": {
+        "icd_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "cpt_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "medications": {
+          "precision": 0.6,
+          "recall": 1.0,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 2,
+          "fn": 0
+        },
+        "body_parts": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 5,
+          "fp": 0,
+          "fn": 0
+        },
+        "provider": {
+          "match": true,
+          "expected": "Sarah Johnson",
+          "extracted": "Sarah Johnson"
+        },
+        "facility": {
+          "match": true,
+          "expected": "Main Street Medical Center",
+          "extracted": "Main Street Medical Center"
+        },
+        "restrictions": {
+          "precision": 0.6667,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "mmi": {
+          "match": true,
+          "expected": null,
+          "detected": null
+        },
+        "impairment": {
+          "match": true,
+          "expected": null,
+          "detected": null
+        },
+        "doc_type": {
+          "match": true,
+          "expected": "Clinic/Progress Note (SOAP)",
+          "detected": "Clinic/Progress Note (SOAP)"
+        },
+        "future_needs": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "causation": {
+          "match": true,
+          "expected": null,
+          "extracted": []
+        },
+        "processing_time_ms": 2.34
+      },
+      "radiology_report": {
+        "icd_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0
+        },
+        "cpt_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "medications": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "body_parts": {
+          "precision": 0.6667,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "provider": {
+          "match": true,
+          "expected": "Michael Chen",
+          "extracted": "Michael Chen"
+        },
+        "facility": {
+          "match": true,
+          "expected": "Regional Imaging Center",
+          "extracted": "Regional Imaging Center"
+        },
+        "restrictions": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "mmi": {
+          "match": true,
+          "expected": null,
+          "detected": null
+        },
+        "impairment": {
+          "match": true,
+          "expected": null,
+          "detected": null
+        },
+        "doc_type": {
+          "match": true,
+          "expected": "Radiology Report",
+          "detected": "Radiology Report"
+        },
+        "future_needs": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "causation": {
+          "match": true,
+          "expected": null,
+          "extracted": []
+        },
+        "processing_time_ms": 0.37
+      },
+      "operative_note": {
+        "icd_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0
+        },
+        "cpt_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0
+        },
+        "medications": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "body_parts": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 2
+        },
+        "provider": {
+          "match": true,
+          "expected": "Robert Williams",
+          "extracted": "Robert Williams"
+        },
+        "facility": {
+          "match": true,
+          "expected": "St. Mary Hospital",
+          "extracted": "St. Mary Hospital"
+        },
+        "restrictions": {
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1": 0.5,
+          "tp": 1,
+          "fp": 1,
+          "fn": 1
+        },
+        "mmi": {
+          "match": true,
+          "expected": null,
+          "detected": null
+        },
+        "impairment": {
+          "match": true,
+          "expected": null,
+          "detected": null
+        },
+        "doc_type": {
+          "match": true,
+          "expected": "Operative/Procedure Note",
+          "detected": "Operative/Procedure Note"
+        },
+        "future_needs": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "causation": {
+          "match": true,
+          "expected": null,
+          "extracted": []
+        },
+        "processing_time_ms": 0.55
+      },
+      "ime_report": {
+        "icd_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "cpt_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "medications": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "body_parts": {
+          "precision": 0.8333,
+          "recall": 1.0,
+          "f1": 0.9091,
+          "tp": 5,
+          "fp": 1,
+          "fn": 0
+        },
+        "provider": {
+          "match": true,
+          "expected": "James Thompson",
+          "extracted": "James Thompson"
+        },
+        "facility": {
+          "match": true,
+          "expected": "Pacific Medical Associates",
+          "extracted": "Pacific Medical Associates"
+        },
+        "restrictions": {
+          "precision": 0.6667,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "mmi": {
+          "match": true,
+          "expected": true,
+          "detected": true
+        },
+        "impairment": {
+          "match": true,
+          "expected": "12%",
+          "detected": "12%"
+        },
+        "doc_type": {
+          "match": true,
+          "expected": "General Medical Record",
+          "detected": "General Medical Record"
+        },
+        "future_needs": {
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1": 0.6667
+        },
+        "causation": {
+          "match": true,
+          "expected": "motor vehicle accident of 01/10/2024",
+          "extracted": [
+            "The injuries described are causally related to the motor vehicle accident",
+            "motor vehicle accident"
+          ]
+        },
+        "processing_time_ms": 0.74
+      },
+      "lab_report": {
+        "icd_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "cpt_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "medications": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "body_parts": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "provider": {
+          "match": true,
+          "expected": "Lisa Park",
+          "extracted": "Lisa Park"
+        },
+        "facility": {
+          "match": true,
+          "expected": "Quest Diagnostics",
+          "extracted": "Quest Diagnostics"
+        },
+        "restrictions": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "mmi": {
+          "match": true,
+          "expected": null,
+          "detected": null
+        },
+        "impairment": {
+          "match": true,
+          "expected": null,
+          "detected": null
+        },
+        "doc_type": {
+          "match": true,
+          "expected": "Laboratory Report",
+          "detected": "Laboratory Report"
+        },
+        "future_needs": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "causation": {
+          "match": true,
+          "expected": null,
+          "extracted": []
+        },
+        "processing_time_ms": 0.37
+      },
+      "physician_letter": {
+        "icd_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "cpt_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "medications": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "body_parts": {
+          "precision": 0.8333,
+          "recall": 1.0,
+          "f1": 0.9091,
+          "tp": 5,
+          "fp": 1,
+          "fn": 0
+        },
+        "provider": {
+          "match": true,
+          "expected": "Sarah Johnson",
+          "extracted": "Sarah Johnson"
+        },
+        "facility": {
+          "match": false,
+          "expected": "Main Street Medical Center",
+          "extracted": null
+        },
+        "restrictions": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "mmi": {
+          "match": true,
+          "expected": null,
+          "detected": null
+        },
+        "impairment": {
+          "match": true,
+          "expected": null,
+          "detected": null
+        },
+        "doc_type": {
+          "match": true,
+          "expected": "Physician Letter",
+          "detected": "Physician Letter"
+        },
+        "future_needs": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "causation": {
+          "match": true,
+          "expected": "motor vehicle accident",
+          "extracted": [
+            "to the motor vehicle accident based",
+            "motor vehicle accident based"
+          ]
+        },
+        "processing_time_ms": 0.27
+      },
+      "workers_comp_note": {
+        "icd_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0
+        },
+        "cpt_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0
+        },
+        "medications": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1": 0.6667,
+          "tp": 1,
+          "fp": 1,
+          "fn": 0
+        },
+        "body_parts": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1": 0.6667,
+          "tp": 2,
+          "fp": 2,
+          "fn": 0
+        },
+        "provider": {
+          "match": true,
+          "expected": "Amanda Torres",
+          "extracted": "Amanda Torres"
+        },
+        "facility": {
+          "match": true,
+          "expected": "Occupational Health Clinic",
+          "extracted": "Occupational Health Clinic"
+        },
+        "restrictions": {
+          "precision": 0.3333,
+          "recall": 0.5,
+          "f1": 0.4,
+          "tp": 1,
+          "fp": 2,
+          "fn": 1
+        },
+        "mmi": {
+          "match": true,
+          "expected": null,
+          "detected": null
+        },
+        "impairment": {
+          "match": true,
+          "expected": null,
+          "detected": null
+        },
+        "doc_type": {
+          "match": true,
+          "expected": "Clinic/Progress Note (SOAP)",
+          "detected": "Clinic/Progress Note (SOAP)"
+        },
+        "future_needs": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "causation": {
+          "match": true,
+          "expected": null,
+          "extracted": []
+        },
+        "processing_time_ms": 0.32
+      },
+      "emergency_dept_note": {
+        "icd_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0
+        },
+        "cpt_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "medications": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 5,
+          "fp": 0,
+          "fn": 0
+        },
+        "body_parts": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0
+        },
+        "provider": {
+          "match": false,
+          "expected": "Kevin O Brien",
+          "extracted": "Kevin"
+        },
+        "facility": {
+          "match": true,
+          "expected": "Memorial Hospital Emergency Department",
+          "extracted": "Memorial Hospital Emergency Department"
+        },
+        "restrictions": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "mmi": {
+          "match": true,
+          "expected": null,
+          "detected": null
+        },
+        "impairment": {
+          "match": true,
+          "expected": null,
+          "detected": null
+        },
+        "doc_type": {
+          "match": true,
+          "expected": "Emergency Dept Note",
+          "detected": "Emergency Dept Note"
+        },
+        "future_needs": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "causation": {
+          "match": true,
+          "expected": null,
+          "extracted": []
+        },
+        "processing_time_ms": 0.3
+      },
+      "therapy_note": {
+        "icd_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0
+        },
+        "cpt_codes": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "medications": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "body_parts": {
+          "precision": 0.75,
+          "recall": 1.0,
+          "f1": 0.8571,
+          "tp": 3,
+          "fp": 1,
+          "fn": 0
+        },
+        "provider": {
+          "match": true,
+          "expected": "Emily Watson",
+          "extracted": "Emily Watson"
+        },
+        "facility": {
+          "match": true,
+          "expected": "ProMotion Physical Therapy",
+          "extracted": "ProMotion Physical Therapy"
+        },
+        "restrictions": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "mmi": {
+          "match": true,
+          "expected": null,
+          "detected": null
+        },
+        "impairment": {
+          "match": true,
+          "expected": null,
+          "detected": null
+        },
+        "doc_type": {
+          "match": true,
+          "expected": "Therapy Note",
+          "detected": "Therapy Note"
+        },
+        "future_needs": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "causation": {
+          "match": true,
+          "expected": null,
+          "extracted": []
+        },
+        "processing_time_ms": 0.27
+      }
+    },
+    "summary": {
+      "icd_codes": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "cpt_codes": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "medications": {
+        "precision": 0.8235,
+        "recall": 1.0,
+        "f1": 0.9032
+      },
+      "body_parts": {
+        "precision": 0.8235,
+        "recall": 0.9333,
+        "f1": 0.875
+      },
+      "restrictions": {
+        "precision": 0.5455,
+        "recall": 0.75,
+        "f1": 0.6316
+      },
+      "provider": {
+        "accuracy": 0.8889,
+        "correct": 8,
+        "total": 9
+      },
+      "facility": {
+        "accuracy": 0.8889,
+        "correct": 8,
+        "total": 9
+      },
+      "mmi": {
+        "accuracy": 1.0,
+        "correct": 9,
+        "total": 9
+      },
+      "impairment": {
+        "accuracy": 1.0,
+        "correct": 9,
+        "total": 9
+      },
+      "doc_type": {
+        "accuracy": 1.0,
+        "correct": 9,
+        "total": 9
+      },
+      "causation": {
+        "accuracy": 1.0,
+        "correct": 9,
+        "total": 9
+      },
+      "total_processing_time_ms": 5.6,
+      "documents_tested": 9
+    }
+  },
+  "processing_speed": {
+    "entity_extraction": {
+      "soap_note": {
+        "mean_ms": 0.319,
+        "median_ms": 0.3,
+        "p95_ms": 0.397,
+        "min_ms": 0.294,
+        "max_ms": 0.554,
+        "iterations": 100
+      },
+      "radiology_report": {
+        "mean_ms": 0.216,
+        "median_ms": 0.208,
+        "p95_ms": 0.273,
+        "min_ms": 0.205,
+        "max_ms": 0.314,
+        "iterations": 100
+      },
+      "operative_note": {
+        "mean_ms": 0.209,
+        "median_ms": 0.197,
+        "p95_ms": 0.257,
+        "min_ms": 0.193,
+        "max_ms": 0.602,
+        "iterations": 100
+      },
+      "ime_report": {
+        "mean_ms": 0.35,
+        "median_ms": 0.33,
+        "p95_ms": 0.414,
+        "min_ms": 0.323,
+        "max_ms": 0.86,
+        "iterations": 100
+      },
+      "lab_report": {
+        "mean_ms": 0.23,
+        "median_ms": 0.213,
+        "p95_ms": 0.356,
+        "min_ms": 0.21,
+        "max_ms": 0.493,
+        "iterations": 100
+      },
+      "physician_letter": {
+        "mean_ms": 0.265,
+        "median_ms": 0.253,
+        "p95_ms": 0.353,
+        "min_ms": 0.247,
+        "max_ms": 0.453,
+        "iterations": 100
+      },
+      "workers_comp_note": {
+        "mean_ms": 0.276,
+        "median_ms": 0.26,
+        "p95_ms": 0.362,
+        "min_ms": 0.252,
+        "max_ms": 0.517,
+        "iterations": 100
+      },
+      "emergency_dept_note": {
+        "mean_ms": 0.264,
+        "median_ms": 0.257,
+        "p95_ms": 0.297,
+        "min_ms": 0.254,
+        "max_ms": 0.427,
+        "iterations": 100
+      },
+      "therapy_note": {
+        "mean_ms": 0.253,
+        "median_ms": 0.24,
+        "p95_ms": 0.317,
+        "min_ms": 0.234,
+        "max_ms": 0.455,
+        "iterations": 100
+      }
+    },
+    "classification": {
+      "soap_note": {
+        "mean_ms": 0.039,
+        "median_ms": 0.039,
+        "iterations": 100
+      },
+      "radiology_report": {
+        "mean_ms": 0.054,
+        "median_ms": 0.051,
+        "iterations": 100
+      },
+      "operative_note": {
+        "mean_ms": 0.116,
+        "median_ms": 0.111,
+        "iterations": 100
+      },
+      "ime_report": {
+        "mean_ms": 0.303,
+        "median_ms": 0.286,
+        "iterations": 100
+      },
+      "lab_report": {
+        "mean_ms": 0.138,
+        "median_ms": 0.134,
+        "iterations": 100
+      },
+      "physician_letter": {
+        "mean_ms": 0.001,
+        "median_ms": 0.001,
+        "iterations": 100
+      },
+      "workers_comp_note": {
+        "mean_ms": 0.037,
+        "median_ms": 0.036,
+        "iterations": 100
+      },
+      "emergency_dept_note": {
+        "mean_ms": 0.022,
+        "median_ms": 0.02,
+        "iterations": 100
+      },
+      "therapy_note": {
+        "mean_ms": 0.021,
+        "median_ms": 0.02,
+        "iterations": 100
+      }
+    },
+    "timeline_building": {
+      "num_records": 9,
+      "mean_ms": 5.579,
+      "median_ms": 5.416,
+      "p95_ms": 6.283,
+      "iterations": 50
+    }
+  },
+  "engine_fallback": {
+    "engine_priority": {
+      "available_engines": [
+        "tesseract"
+      ],
+      "tesseract_present": true
+    },
+    "quality_thresholds": {
+      "confidence_threshold": 0.7,
+      "quality_threshold": 0.6,
+      "low_conf_triggers_fallback": true,
+      "high_conf_no_fallback": true
+    },
+    "classification": {
+      "soap_note": {
+        "expected": "Clinic/Progress Note (SOAP)",
+        "detected": "Clinic/Progress Note (SOAP)",
+        "match": true
+      },
+      "radiology_report": {
+        "expected": "Radiology Report",
+        "detected": "Radiology Report",
+        "match": true
+      },
+      "operative_note": {
+        "expected": "Operative/Procedure Note",
+        "detected": "Operative/Procedure Note",
+        "match": true
+      },
+      "ime_report": {
+        "expected": "General Medical Record",
+        "detected": "General Medical Record",
+        "match": true
+      },
+      "lab_report": {
+        "expected": "Laboratory Report",
+        "detected": "Laboratory Report",
+        "match": true
+      },
+      "physician_letter": {
+        "expected": "Physician Letter",
+        "detected": "Physician Letter",
+        "match": true
+      },
+      "workers_comp_note": {
+        "expected": "Clinic/Progress Note (SOAP)",
+        "detected": "Clinic/Progress Note (SOAP)",
+        "match": true
+      },
+      "emergency_dept_note": {
+        "expected": "Emergency Dept Note",
+        "detected": "Emergency Dept Note",
+        "match": true
+      },
+      "therapy_note": {
+        "expected": "Therapy Note",
+        "detected": "Therapy Note",
+        "match": true
+      }
+    }
+  },
+  "total_benchmark_time_s": 0.6
+}
