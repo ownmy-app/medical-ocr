@@ -220,6 +220,66 @@ Confidence is available in:
 | WebP | `.webp` | Single image |
 
 PDF files are rasterised at 300 DPI by default. Image files are loaded directly via Pillow.
+---
+
+## Benchmark Results
+
+Benchmarks run against 9 synthetic medical document types with known ground truth.
+No OCR engine needed -- tests regex-based extraction accuracy directly.
+
+Run benchmarks: `python3 benchmarks/run_all.py`
+
+### Field Extraction Accuracy
+
+| Field | Precision | Recall | F1 Score |
+|-------|-----------|--------|----------|
+| ICD-10 Codes | 100.0% | 100.0% | 100.0% |
+| CPT Codes | 100.0% | 100.0% | 100.0% |
+| Medications | 82.3% | 100.0% | 90.3% |
+| Body Parts | 82.3% | 93.3% | 87.5% |
+| Work Restrictions | 54.5% | 75.0% | 63.2% |
+
+### Field Detection Accuracy
+
+| Field | Accuracy |
+|-------|----------|
+| Provider Name | 88.9% |
+| Facility Name | 88.9% |
+| MMI Status | 100.0% |
+| Impairment Rating | 100.0% |
+| Document Type | 100.0% |
+| Causation Statements | 100.0% |
+
+### Processing Speed (per document)
+
+| Stage | Mean | Median | P95 |
+|-------|------|--------|-----|
+| Entity Extraction | 0.27ms | 0.25ms | 0.36ms |
+| Document Classification | 0.08ms | 0.05ms | 0.29ms |
+| Timeline Building (9 docs) | 5.58ms | 5.42ms | 6.28ms |
+
+### Supported Document Types
+
+| Document Type | Classification | Notes |
+|---------------|:-:|-------|
+| SOAP/Progress Notes | Detected | Subjective/Objective/Assessment/Plan structure |
+| Radiology Reports | Detected | MRI, CT, X-ray, Ultrasound reports |
+| Operative/Procedure Notes | Detected | Surgery, procedure documentation |
+| Laboratory Reports | Detected | CBC, metabolic panels, ESR/CRP |
+| Emergency Dept Notes | Detected | Triage, ED course documentation |
+| Physician Letters | Detected | Referral letters, attorney correspondence |
+| Therapy Notes | Detected | Physical therapy, occupational therapy |
+| IME Reports | Detected | Independent Medical Examination reports |
+| Admission/Discharge Summaries | Detected | Hospital admission documentation |
+| Workers Comp Notes | Detected | Treated as SOAP variant |
+
+### Known Limitations
+
+- **Restrictions extraction (63.2% F1)**: Multi-sentence restriction blocks and implicit restrictions (e.g., "light duty only") have lower detection rates. Compound restrictions split across sentences may be missed.
+- **Medication precision (82.3%)**: Some false positives from non-medication words followed by dosage-like numbers. The pipeline captures all true medications (100% recall) but occasionally flags non-medications.
+- **Body parts precision (82.3%)**: Anatomical terms appearing in non-anatomical context may cause false positives (e.g., "arm" in "right arm" vs. referring to an arm of a study).
+- **Facility detection in letters**: Physician letters without an explicit "Facility:" label may not have the facility extracted.
+- **Provider names with special characters**: Names with apostrophes (O'Brien) require space-separated format (O Brien) for reliable extraction.
 
 ---
 
